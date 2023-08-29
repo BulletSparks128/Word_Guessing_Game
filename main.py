@@ -1,47 +1,111 @@
 import random
 
-name = input("What's your name? ")
+# Lista de nomes de Pokémon da primeira geração da região Kanto
+words = ['BULBASSAURO', 'IVYSSAURO', 'VENUSAURO', 
+         'CHARMANDER', 'CHARMELEON', 'CHARIZARD', 
+         'SQUIRTLE', 'WARTORTLE', 'BLASTOISE', 
+         'CATERPIE', 'METAPOD', 'BUTTERFREE', 
+         'WEEDLE', 'KAKUNA', 'BEEDRILL', 
+         'PIDGEY', 'PIDGEOTTO', 'PIDGEOT', 
+         'RATTATA', 'RATICATE', 'SPEAROW', 
+         'FEAROW', 'EKANS', 'ARBOK', 
+         'PIKACHU', 'RAICHU', 'SANDSHREW', 
+         'SANDSLASH', 'NIDORANA', 'NIDORINA', 
+         'NIDOQUEEN', 'NIDORANO', 'NIDORINO', 
+         'NIDOKING', 'CLEFAIRY', 'CLEFABLE', 
+         'VULPIX', 'NINETALES', 'JIGGLYPUFF', 
+         'WIGGLYTUFF', 'ZUBAT', 'GOLBAT', 
+         'ODDISH', 'GLOOM', 'VILEPLUME', 
+         'PARAS', 'PARASECT', 'VENONAT', 
+         'VENOMOTH', 'DIGLETT', 'DUGTRIO', 
+         'MEOWTH', 'PERSIAN', 'PSYDUCK', 
+         'GOLDUCK', 'MANKEY', 'PRIMEAPE', 
+         'GROWLITHE', 'ARCANINE', 'POLIWAG', 
+         'POLIWHIRL', 'POLIWRATH', 'ABRA', 
+         'KADABRA', 'ALAKAZAM', 'MACHOP', 
+         'MACHOKE', 'MACHAMP', 'BELLSPROUT', 
+         'WEEPINBELL', 'VICTREEBEL', 'TENTACOOL', 
+         'TENTACRUEL', 'GEODUDE', 'GRAVELER', 
+         'GOLEM', 'PONYTA', 'RAPIDASH', 
+         'SLOWPOKE', 'SLOWBRO', 'MAGNEMITE', 
+         'MAGNETON', 'FARFETCHD', 'DODUO', 
+         'DODRIO', 'SEEL', 'DEWGONG', 
+         'GRIMER', 'MUK', 'SHELLDER', 
+         'CLOYSTER', 'GASTLY', 'HAUNTER', 
+         'GENGAR', 'ONIX', 'DROWZEE', 
+         'HYPNO', 'KRABBY', 'KINGLER', 
+         'VOLTORB', 'ELECTRODE', 'EXEGGCUTE', 
+         'EXEGGUTOR', 'CUBONE', 'MAROWAK', 
+         'HITMONLEE', 'HITMONCHAN', 'LICKITUNG', 
+         'KOFFING', 'WEEZING', 'RHYHORN', 
+         'RHYDON', 'CHANSEY', 'TANGELA', 
+         'KANGASKHAN', 'HORSEA', 'SEADRA', 
+         'GOLDEEN', 'SEAKING', 'STARYU', 
+         'STARMIE', 'MRMIME', 'SCYTHER', 
+         'JYNX', 'ELECTABUZZ', 'MAGMAR', 
+         'PINSIR', 'TAUROS', 'MAGIKARP', 
+         'GYARADOS', 'LAPRAS', 'DITTO', 
+         'EEVEE', 'VAPOREON', 'JOLTEON', 
+         'FLAREON', 'PORYGON', 'OMANYTE', 
+         'OMASTAR', 'KABUTO', 'KABUTOPS', 
+         'AERODACTYL', 'SNORLAX', 'ARTICUNO', 
+         'ZAPDOS', 'MOLTRES', 'DRATINI', 
+         'DRAGONAIR', 'DRAGONITE', 'MEWTWO', 
+         'MEW']
 
-print ("These are your options: astronomy, astrophysics, biochemistry, biology, botany, chemistry, entomology, eletricity, genetics, geology, geophysics, herpetology, immunology, magnetism, laboratory, meteorologist")
-
-print("Good Luck, ", name, "!")
-
-words = ['astronomy', 'astrophysics', 'biochemistry', 'biology', 'botany', 'chemistry', 'entomology', 'eletricity','genetics', 'geology', 'geophysics', 'herpetology', 'immunology', 'magnetism', 'laboratory', 'meteorologist']
-
+# Escolhe um nome de Pokémon aleatório da lista
 word = random.choice(words)
+word = word.replace(' ', '')
 
-print("Guess the characters")
+name = input("Qual seu nome? ")
 
-guesses = ''
+print("Boa Sorte,", name, "!")
 
-turns = 12
+if __name__ == '__main__':
+    print("Adivinhe qual a palavra! Dica: é um Pokémon de 1ª Geração da Região Kanto.")
 
-while turns > 0:
-    failed = 0
+    guessed_letters = set()
+    max_wrong_attempts = 6  # Defina o número máximo de tentativas erradas
+    wrong_attempts = 0
+    flag = False
 
-    for char in word:
-        if char in guesses: print (char, end="  ")
+    while not flag and wrong_attempts < max_wrong_attempts:
+        print()
+        for char in word:
+            if char in guessed_letters:
+                print(char, end=' ')
+            else:
+                print('_', end=' ')
+        
+        print()
 
-        else:
-            print("__")
-            failed += 1
+        if all(char in guessed_letters for char in word):
+            print('Parabéns, você acertou a palavra!')
+            break
 
-    if failed == 0:
-        print("You Win")
-        print("The word is: ", word)
-        break
+        try:
+            guess = input('Digite uma letra: ').upper()
 
-    print()
-    guess = input("Guess a character: ")
+            if len(guess) != 1 or not guess.isalpha():
+                print('Digite apenas uma LETRA!')
+                continue
 
-    guesses += guess
+            if guess in guessed_letters:
+                print('Você já tentou esta letra.')
+                continue
 
-    if guess not in word:
-        turns -= 1
+            guessed_letters.add(guess)
 
-        print("Wrong!")
+            if guess in word:
+                print('Letra correta!')
+            else:
+                print('Letra incorreta.')
+                wrong_attempts += 1
 
-        print("You have ", + turns, 'more guesse')
+        except KeyboardInterrupt:
+            print()
+            print('Tchau!')
+            exit()
 
-        if turns ==0:
-            print("You lose!")
+    if wrong_attempts == max_wrong_attempts:
+        print('Você atingiu o limite de tentativas erradas. A palavra era:', word)
